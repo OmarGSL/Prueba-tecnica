@@ -4,7 +4,7 @@ import { getData } from "../services/service";
 import Modal from "./Modal"
 import '../styles/MainContent.css';
 
-const MainContent = () => {
+const MainContent = ({ sidebarOpen }) => {
   const { mockClientData, mockExpedientes, mockRespuestas, mockMotivos } = getData();
   const [activeTab, setActiveTab] = useState('identificacion');
   const [currentImages, setCurrentImages] = useState(mockImages.identificacion);
@@ -17,10 +17,11 @@ const MainContent = () => {
     datosCoinciden: '',
     informacionVigente: '',
     informacionCoincide: '',
-    respuesta: '',
+    respuesta: 'Aprobada',
     motivo: '',
     observaciones: ''
   });
+  console.log(formData.respuesta)
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -57,7 +58,10 @@ const MainContent = () => {
   };
 
   return (
-    <div className="main-content">
+    <div className="main-content" style={{
+      marginLeft: sidebarOpen ? "250px" : "60px",
+    }}>
+
       <div className="content-header">
         <div className="client-info">
           <div className="info-row">
@@ -136,7 +140,7 @@ const MainContent = () => {
             Contacto
           </button>
           <button
-            className={`tab ${activeTab === 'fotografia' ? 'active' : ''}`}
+            className={`tab ${activeTab === 'fotografia' ? 'active' : 'No existe'}`}
             onClick={() => handleTabChange('fotografia')}
           >
             Fotografía
@@ -144,12 +148,20 @@ const MainContent = () => {
         </div>
 
         <div className="tab-content">
-          <h3>Tab Identificación</h3>
+          <h3 >{activeTab.toUpperCase()}</h3>
           <div className="images-grid">
             {currentImages.map((img, index) => (
               <div key={index} className="image-card">
-                <img src={img} alt={`Imagen ${index + 1}`} />
-                <p>Imagen {index + 1}</p>
+                {!img ? (
+                  <p>
+                    No existe {activeTab}
+                  </p>
+                ) : (
+                  <>
+                    <img src={img} alt={`${activeTab} ${index + 1}`} />
+                    <p>{activeTab.toUpperCase()} {index + 1}</p>
+                  </>
+                )}
               </div>
             ))}
           </div>
@@ -221,7 +233,6 @@ const MainContent = () => {
           </div>
         </div>
 
-        {/* Links Externos */}
         <div className="external-links">
           <span className="links-label">Links Externos</span>
           <div className="links-buttons">
@@ -313,6 +324,7 @@ const MainContent = () => {
             <div className="form-group">
               <label>Motivo</label>
               <select
+                disabled= {formData.respuesta === "Aprobada"}
                 value={formData.motivo}
                 onChange={(e) => handleSelectChange('motivo', e.target.value)}
               >
@@ -325,6 +337,8 @@ const MainContent = () => {
           <div className="form-group">
             <label>Observaciones</label>
             <textarea
+            
+              disabled= {formData.respuesta === "Aprobada"}
               placeholder="Observaciones..."
               value={formData.observaciones}
               onChange={(e) => handleTextareaChange(e.target.value)}

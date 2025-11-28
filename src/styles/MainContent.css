@@ -1,11 +1,11 @@
 .main-content {
-  margin-left: 150px;
   margin-top: 60px;
   padding: 24px;
   background-color: #f5f5f5;
   min-height: calc(100vh - 60px);
   transition: margin-left 0.3s ease;
 }
+
 
 .content-header {
   background-color: white;

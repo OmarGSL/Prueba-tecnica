@@ -8,7 +8,6 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-left">
         <div className="logo-container">
-          <span className="logo-icon">👁</span>
           <span className="logo-text">Biométricos</span>
         </div>
       </div>
